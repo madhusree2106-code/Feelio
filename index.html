@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FEELIO ✨ | Whatever you feel, we feelio</title>
+    <meta name="description" content="An animated mood-based recommendation platform featuring Tamil Kollywood & global music, movies with verified OTT streaming links, books, and language filtering with email and password login." />
+    <meta property="og:title" content="FEELIO ✨ | Whatever you feel, we feelio" />
+    <meta property="og:description" content="An animated mood-based recommendation platform featuring Tamil Kollywood & global music, movies with verified OTT streaming links, books, and language filtering with email and password login." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body class="relative bg-[#faf8ff] text-[#1e1b4b] antialiased selection:bg-purple-200 selection:text-purple-900">
+    
+    <!-- Background Animated Gradient Blobs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true" id="bg-blobs-container">
+      <div class="absolute -top-32 -left-20 w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-purple-200/60 via-violet-300/40 to-pink-200/50 blur-3xl animate-blob-1"></div>
+      <div class="absolute top-1/3 -right-32 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-indigo-200/50 via-purple-200/40 to-amber-100/50 blur-3xl animate-blob-2"></div>
+      <div class="absolute bottom-10 left-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-pink-200/50 via-rose-100/40 to-violet-200/40 blur-3xl animate-blob-3"></div>
+      
+      <!-- Floating Emojis & Stars Canvas Layer -->
+      <div id="ambient-floating-layer" class="absolute inset-0"></div>
+    </div>
+
+    <!-- Particle Overlay for Mood Selection -->
+    <div id="particle-burst-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden" aria-hidden="true"></div>
+
+    <!-- ================= 🔐 DEDICATED LOGIN PAGE (SHOWN FIRST) ================= -->
+    <div id="login-view-page" class="relative z-30 min-h-screen flex flex-col justify-between px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <!-- Top Branding -->
+      <div class="max-w-md mx-auto w-full text-center space-y-2">
+        <div class="inline-flex items-center gap-2 glass-pill px-4 py-1.5 rounded-full text-xs font-semibold text-purple-900 border border-purple-200 shadow-xs">
+          <span class="text-base">✨</span>
+          <span class="font-bold tracking-tight">FEELIO</span>
+          <span class="text-purple-400">•</span>
+          <span class="text-slate-600 font-normal">Whatever you feel, we feelio</span>
+        </div>
+      </div>
+
+      <!-- Main Login Container Card -->
+      <div class="max-w-md mx-auto w-full glass-panel p-6 sm:p-8 rounded-3xl border-2 border-purple-200/90 shadow-2xl space-y-6 my-auto" id="login-page-card">
+        
+        <!-- Header Section -->
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-pink-500 flex items-center justify-center text-white text-2xl shadow-md mb-2" id="login-page-avatar">
+            🔐
+          </div>
+          <span class="text-[11px] uppercase tracking-widest font-extrabold text-purple-700 bg-purple-100 px-3 py-0.5 rounded-full inline-block">
+            Member Access
+          </span>
+          <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">
+            Sign In to FEELIO
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+            Enter your email and password to access your mood dashboard, Kollywood & global recommendations.
+          </p>
+        </div>
+
+        <!-- Quick 1-Click Demo Fill -->
+        <div class="p-3 bg-purple-50/90 border border-purple-200/80 rounded-2xl flex items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2 text-slate-600 truncate">
+            <span class="text-base">⚡</span>
+            <span class="truncate">Quick Test: <strong>madhusree644@gmail.com</strong></span>
+          </div>
+          <button type="button" id="btn-quick-fill-demo" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors shrink-0 cursor-pointer shadow-2xs">
+            Auto-fill
+          </button>
+        </div>
+
+        <!-- Clean Email & Password Login Form -->
+        <form id="page-login-form" class="space-y-4">
+          
+          <!-- Email Input -->
+          <div class="space-y-1.5">
+            <label for="page-input-email" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Email Address
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-base pointer-events-none">
+                ✉️
+              </span>
+              <input
+                type="email"
+                id="page-input-email"
+                name="email"
+                placeholder="you@example.com"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/95 border border-purple-200 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none placeholder:text-slate-400 transition-all"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <!-- Password Input -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label for="page-input-password" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                Password
+              </label>
+              <button type="button" id="btn-toggle-page-password" class="text-xs text-purple-700 hover:text-purple-900 font-semibold cursor-pointer select-none">
+                Show Password
+              </button>
+            </div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-base pointer-events-none">
+                🔒
+              </span>
+              <input
+                type="password"
+                id="page-input-password"
+                name="password"
+                placeholder="Enter password"
+                class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/95 border border-purple-200 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-purple-500 focus:outline-none placeholder:text-slate-400 transition-all"
+                required
+                autocomplete="current-password"
+              />
+            </div>
+          </div>
+
+          <!-- Preferred Starting Language -->
+          <div class="space-y-1.5 pt-1">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Starting Language Shelf
+            </label>
+            <div class="grid grid-cols-3 gap-2" id="login-page-lang-preference">
+              <button type="button" class="page-lang-pref-btn px-2.5 py-1.5 rounded-xl text-xs font-bold border border-purple-400 bg-purple-600 text-white shadow-xs cursor-pointer" data-lang="all">
+                ✨ All Vibes
+              </button>
+              <button type="button" class="page-lang-pref-btn px-2.5 py-1.5 rounded-xl text-xs font-bold border border-purple-200 bg-white/90 text-slate-700 hover:bg-purple-50 cursor-pointer" data-lang="tamil">
+                🌴 Tamil
+              </button>
+              <button type="button" class="page-lang-pref-btn px-2.5 py-1.5 rounded-xl text-xs font-bold border border-purple-200 bg-white/90 text-slate-700 hover:bg-purple-50 cursor-pointer" data-lang="global">
+                🌐 Global
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+              <input type="checkbox" id="page-login-remember" checked class="rounded text-purple-600 focus:ring-purple-400" />
+              <span>Remember me</span>
+            </label>
+            <span class="text-[11px] text-purple-700 font-semibold">Instant Access</span>
+          </div>
+
+          <!-- Feedback message -->
+          <div id="page-login-feedback" class="hidden p-3 rounded-xl text-xs font-semibold animate-message-in"></div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="btn-page-submit-login" class="btn-feelio-primary w-full py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base cursor-pointer flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all">
+              <span>Sign In & Continue</span>
+              <span>🚀</span>
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Bottom Note -->
+      <div class="max-w-md mx-auto text-center text-xs text-slate-500 py-4">
+        <span>🔒 Client-side secure storage. Feel free to use any valid email & password.</span>
+      </div>
+    </div>
+
+    <!-- ================= 📊 FEELIO DASHBOARD (UNLOCKED AFTER LOGIN) ================= -->
+    <div id="dashboard-view" class="hidden relative z-20 min-h-screen flex flex-col justify-between">
+      <!-- Navigation Bar -->
+      <header class="sticky top-0 z-40 w-full px-4 sm:px-8 py-3.5 transition-all duration-200" id="main-header">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass-pill px-5 py-2.5 rounded-full">
+          <a href="#hero-section" class="flex items-center gap-2 group" id="nav-logo">
+            <span class="text-2xl transition-transform duration-300 group-hover:scale-125 inline-block">✨</span>
+            <span class="font-display font-bold text-xl tracking-tight bg-gradient-to-r from-purple-700 via-violet-600 to-pink-600 bg-clip-text text-transparent">FEELIO</span>
+            <span class="hidden sm:inline-block text-xs font-medium text-purple-700/60 px-2 py-0.5 bg-purple-100/70 rounded-full">Whatever you feel, we feelio</span>
+          </a>
+
+          <!-- Desktop Navigation Links -->
+          <nav class="hidden md:flex items-center gap-1 sm:gap-2 text-sm font-medium text-slate-600" id="desktop-nav-links">
+            <a href="#mood-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-moods">Pick Mood</a>
+            <a href="#music-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-music">Music 🎧</a>
+            <a href="#movies-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-movies">Movies 🍿</a>
+            <a href="#books-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-books">Books 📖</a>
+            <a href="#booster-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-booster">Booster 🚨</a>
+            <a href="#journey-section" class="px-3 py-1.5 rounded-full hover:text-purple-700 hover:bg-purple-100/50 transition-colors" id="link-nav-journey">Journey 📈</a>
+          </nav>
+
+          <!-- Current Active Mood Quick Indicator, Identity Badge, Logout & Mobile Menu Toggle -->
+          <div class="flex items-center gap-2">
+            <!-- Active Account Profile Trigger -->
+            <button type="button" id="btn-login-modal-trigger" class="glass-pill px-3 py-1.5 rounded-full text-xs font-bold text-purple-950 bg-purple-100/90 hover:bg-purple-200 border border-purple-300 shadow-xs transition-all flex items-center gap-1.5 cursor-pointer" title="View account or switch login">
+              <span id="login-badge-icon">👤</span>
+              <span id="login-badge-text" class="max-w-[130px] truncate">Sign In</span>
+            </button>
+
+            <!-- Prominent Direct Log Out Button (Takes back to login page) -->
+            <button type="button" id="btn-dashboard-logout" class="glass-pill px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold text-rose-700 bg-rose-50/90 hover:bg-rose-100 border border-rose-200 shadow-xs transition-all flex items-center gap-1 cursor-pointer" title="Log out and return to login page">
+              <span>🧳</span>
+              <span class="hidden sm:inline">Log Out</span>
+            </button>
+
+            <div id="current-mood-indicator" class="hidden items-center gap-1.5 px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full animate-fade-in cursor-pointer" title="Click to view recommendations">
+              <span id="indicator-emoji">😊</span>
+              <span id="indicator-name">Happy</span>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button id="btn-mobile-menu" type="button" class="md:hidden p-2 text-purple-900 hover:bg-purple-100/70 rounded-full transition-colors" aria-label="Toggle menu">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="icon-menu-bars">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+              <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="icon-menu-close">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-menu-drawer" class="hidden md:hidden max-w-7xl mx-auto mt-2 glass-panel p-4 rounded-2xl animate-message-in">
+        <div class="flex flex-col gap-2 font-medium text-slate-700 text-sm">
+          <button type="button" id="m-btn-login-modal-trigger" class="mobile-nav-link p-2.5 rounded-xl bg-purple-200/80 hover:bg-purple-300/80 text-purple-950 font-bold flex items-center justify-between transition-colors">
+            <span class="flex items-center gap-2">
+              <span id="m-login-badge-icon">👤</span>
+              <span id="m-login-badge-text">Sign In</span>
+            </span>
+            <span class="text-xs bg-purple-300/90 text-purple-950 px-2 py-0.5 rounded-full font-semibold">Account</span>
+          </button>
+          <a href="#mood-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-mood">
+            <span>Pick Mood</span>
+            <span>👀</span>
+          </a>
+          <a href="#music-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-music">
+            <span>Music Recommendations</span>
+            <span>🎧</span>
+          </a>
+          <a href="#movies-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-movies">
+            <span>Movies & Series</span>
+            <span>🍿</span>
+          </a>
+          <a href="#books-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-books">
+            <span>Book Recommendations</span>
+            <span>📖</span>
+          </a>
+          <a href="#booster-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-booster">
+            <span>Emergency Booster</span>
+            <span>🚨</span>
+          </a>
+          <a href="#journey-section" class="mobile-nav-link p-2.5 rounded-xl hover:bg-purple-100/80 flex items-center justify-between" id="m-link-journey">
+            <span>Mood Journey Timeline</span>
+            <span>📈</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 py-6 sm:py-12" id="main-content">
+
+      <!-- ================= 🏠 HOME HERO SECTION ================= -->
+      <section class="relative pt-6 sm:pt-14 pb-12 flex flex-col items-center text-center space-y-8" id="hero-section">
+        
+        <!-- Logo Pill Badge -->
+        <div class="inline-flex items-center gap-2 glass-pill px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-purple-900 border border-purple-200/60 shadow-sm animate-float-1" id="hero-tagline-badge">
+          <span class="text-base">✨</span>
+          <span class="font-semibold text-purple-800">FEELIO</span>
+          <span class="text-purple-400">•</span>
+          <span class="text-slate-600 font-normal">“Whatever you feel, we feelio.”</span>
+        </div>
+
+        <!-- Main Hero Heading -->
+        <div class="max-w-3xl space-y-4">
+          <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.12]" id="hero-heading">
+            So… what’s the <br class="hidden sm:inline" />
+            <span class="bg-gradient-to-r from-purple-600 via-violet-600 to-pink-500 bg-clip-text text-transparent">vibe today?</span>
+          </h1>
+          <p class="text-lg sm:text-xl text-slate-600 font-normal max-w-xl mx-auto leading-relaxed" id="hero-subtitle">
+            Tell Feelio your mood. We’ll bring the vibes.
+          </p>
+        </div>
+
+        <!-- Big Animated CTA Buttons -->
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="#mood-section" class="btn-feelio-primary inline-flex items-center gap-3 px-8 py-4 rounded-full text-base sm:text-lg font-bold tracking-wide group" id="btn-hero-start">
+            <span>Let’s Feel It</span>
+            <span class="text-xl transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+          </a>
+          <button type="button" id="btn-hero-login" class="inline-flex items-center gap-2 px-6 py-4 rounded-full text-base font-bold text-purple-900 bg-white/90 hover:bg-white border-2 border-purple-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer" title="Declare secret identity">
+            <span id="hero-login-icon">🎭</span>
+            <span id="hero-login-text">Funny Login</span>
+          </button>
+        </div>
+
+        <!-- Quick Mood Chips Preview -->
+        <div class="pt-4 flex flex-wrap items-center justify-center gap-2 max-w-2xl text-xs sm:text-sm text-slate-500" id="hero-mood-preview-chips">
+          <span class="text-slate-400 font-medium">Quick vibes:</span>
+          <button type="button" class="quick-mood-chip glass-pill px-3 py-1 rounded-full hover:bg-white transition-all text-slate-700" data-mood-id="happy">😊 Happy</button>
+          <button type="button" class="quick-mood-chip glass-pill px-3 py-1 rounded-full hover:bg-white transition-all text-slate-700" data-mood-id="sad">😢 Sad</button>
+          <button type="button" class="quick-mood-chip glass-pill px-3 py-1 rounded-full hover:bg-white transition-all text-slate-700" data-mood-id="tired">😴 Tired</button>
+          <button type="button" class="quick-mood-chip glass-pill px-3 py-1 rounded-full hover:bg-white transition-all text-slate-700" data-mood-id="angry">😡 Angry</button>
+          <button type="button" class="quick-mood-chip glass-pill px-3 py-1 rounded-full hover:bg-white transition-all text-slate-700" data-mood-id="bored">🥱 Bored</button>
+        </div>
+      </section>
+
+      <!-- ================= 😶 MOOD SELECTION SECTION ================= -->
+      <section class="scroll-mt-24 space-y-8" id="mood-section">
+        <div class="text-center space-y-2 max-w-2xl mx-auto">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-slate-900" id="mood-section-title">
+            Pick your current emotional situation 👀
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base" id="mood-section-subtitle">
+            Tap whatever fits. No judgment, only top-tier recommendations.
+          </p>
+        </div>
+
+        <!-- Grid of 8 Mood Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5" id="moods-grid">
+          
+          <!-- Card: Happy -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="happy" id="mood-card-happy">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">😊</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Sunny</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Happy</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Main character energy detected.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Sad -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="sad" id="mood-card-sad">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">😢</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">Tissues</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Sad</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Okay… tissues loading.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Angry -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="angry" id="mood-card-angry">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">😡</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-100 text-red-800">Fuming</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Angry</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Please don't text them yet.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Tired -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="tired" id="mood-card-tired">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">😴</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800">1% Battery</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Tired</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Battery critically low.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Calm -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="calm" id="mood-card-calm">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">😌</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Zen</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Calm</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“In my peaceful era, do not disturb.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Excited -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="excited" id="mood-card-excited">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">🤩</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-800">Hype</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Excited</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Serotonin off the charts, hold on!”</p>
+            </div>
+          </button>
+
+          <!-- Card: Bored -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="bored" id="mood-card-bored">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">🥱</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">Zero Dopamine</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Bored</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“Brain has left the chat.”</p>
+            </div>
+          </button>
+
+          <!-- Card: Heartbroken -->
+          <button type="button" class="mood-card glass-panel text-left p-4 sm:p-5 rounded-2xl cursor-pointer flex flex-col justify-between border-2 border-transparent" data-mood-id="heartbroken" id="mood-card-heartbroken">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-4xl sm:text-5xl transition-transform duration-300 mood-emoji">💔</span>
+              <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800">Glow-Up Arc</span>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900">Heartbroken</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 line-clamp-2">“We heal. We don't stalk.”</p>
+            </div>
+          </button>
+
+        </div>
+      </section>
+
+      <!-- ================= 😂 FUNNY FEELIO RESPONSE & MOOD CHANGE ================= -->
+      <section id="feelio-response-section" class="scroll-mt-24">
+        <!-- Container dynamically filled or updated by JS -->
+        <div id="feelio-response-container" class="glass-panel p-6 sm:p-8 rounded-3xl border-2 border-purple-200/80 shadow-lg relative overflow-hidden transition-all duration-300">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+            <div id="response-emoji-wrapper" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-purple-100 flex items-center justify-center text-5xl sm:text-6xl flex-shrink-0 shadow-inner">
+              ✨
+            </div>
+            <div class="space-y-2 flex-grow">
+              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span class="px-2.5 py-0.5 bg-purple-100 text-purple-800 rounded-full text-xs font-bold uppercase tracking-wider" id="response-badge">Feelio Vibe Check</span>
+                <span class="text-xs text-slate-500" id="response-time">Right Now</span>
+              </div>
+              <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900" id="response-headline">
+                Pick a vibe above to unlock Feelio’s mind! 🔮
+              </h3>
+              <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl" id="response-subline">
+                Select any of the 8 emotional situations to receive tailor-made soundtracks, movies, books, and emergency boosters.
+              </p>
+            </div>
+
+            <!-- Mood Change CTA Button -->
+            <div class="flex-shrink-0 pt-2 sm:pt-0">
+              <button type="button" id="btn-change-mood" class="glass-pill px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-purple-700 hover:text-purple-900 hover:bg-white transition-all flex items-center gap-1.5 border border-purple-200">
+                <span>🔄</span>
+                <span>Actually… I feel different now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 🌴 DASHBOARD CONTENT LANGUAGE TOOLBAR ================= -->
+      <div class="glass-panel p-3.5 sm:p-4 rounded-2xl border border-purple-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3" id="language-filter-bar">
+        <div class="flex items-center gap-2.5 w-full sm:w-auto">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex-shrink-0">Filter All Content:</span>
+          <div class="inline-flex p-1 bg-purple-50 rounded-xl border border-purple-200/80 flex-grow sm:flex-grow-0" role="tablist">
+            <button type="button" id="btn-filter-all" class="filter-lang-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-purple-900 shadow-sm cursor-pointer" data-lang="all">
+              ✨ All Vibes
+            </button>
+            <button type="button" id="btn-filter-tamil" class="filter-lang-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="tamil">
+              🌴 Tamil Special (தமிழ்)
+            </button>
+            <button type="button" id="btn-filter-global" class="filter-lang-btn px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="global">
+              🌐 English & Global
+            </button>
+          </div>
+        </div>
+        <div class="text-xs font-medium text-purple-700 flex items-center gap-2 bg-purple-50/80 px-3 py-1.5 rounded-xl border border-purple-100">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="filter-status-desc">Kollywood songs, verified OTT cinema & literature ready</span>
+        </div>
+      </div>
+
+      <!-- ================= 🎵 MUSIC RECOMMENDATIONS ================= -->
+      <section class="scroll-mt-24 space-y-6" id="music-section">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-600">
+              <span>Spotify Curation</span>
+              <span>•</span>
+              <span id="music-mood-indicator">All Vibes</span>
+            </div>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-slate-900" id="music-section-title">
+              Your soundtrack 🎧
+            </h2>
+            <p class="text-sm text-slate-600">
+              Audio frequencies calibrated to your exact emotional frequency.
+            </p>
+          </div>
+
+          <!-- Song Language Filter Options -->
+          <div class="inline-flex p-1 bg-purple-50 rounded-xl border border-purple-200/80 self-start sm:self-auto" role="tablist" id="music-lang-filter-bar">
+            <button type="button" class="music-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-white text-purple-900 shadow-xs cursor-pointer" data-lang="all" id="btn-music-lang-all">
+              ✨ All Songs
+            </button>
+            <button type="button" class="music-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="tamil" id="btn-music-lang-tamil">
+              🌴 Tamil Hits
+            </button>
+            <button type="button" class="music-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="global" id="btn-music-lang-global">
+              🌐 Global Hits
+            </button>
+          </div>
+        </div>
+
+        <!-- Music Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="music-cards-grid">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </section>
+
+      <!-- ================= 🎬 MOVIES & SERIES ================= -->
+      <section class="scroll-mt-24 space-y-6" id="movies-section">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-600">
+              <span>Streaming Queue</span>
+              <span>•</span>
+              <span id="movies-mood-indicator">Verified OTT</span>
+            </div>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-slate-900" id="movies-section-title">
+              Maybe a movie can fix it? 🍿
+            </h2>
+            <p class="text-sm text-slate-600">
+              Verified OTT destinations (Sun NXT, Disney+ Hotstar, Prime Video, Netflix, SonyLIV, Zee5).
+            </p>
+          </div>
+
+          <!-- Movie Language Filter Options -->
+          <div class="inline-flex p-1 bg-purple-50 rounded-xl border border-purple-200/80 self-start sm:self-auto" role="tablist" id="movie-lang-filter-bar">
+            <button type="button" class="movie-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-white text-purple-900 shadow-xs cursor-pointer" data-lang="all" id="btn-movie-lang-all">
+              ✨ All Movies
+            </button>
+            <button type="button" class="movie-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="tamil" id="btn-movie-lang-tamil">
+              🌴 Tamil Cinema
+            </button>
+            <button type="button" class="movie-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="global" id="btn-movie-lang-global">
+              🌐 Global Cinema
+            </button>
+          </div>
+        </div>
+
+        <!-- Movies Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="movies-cards-grid">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </section>
+
+      <!-- ================= 📚 BOOK RECOMMENDATIONS ================= -->
+      <section class="scroll-mt-24 space-y-6" id="books-section">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-600">
+              <span>Mindful Reading</span>
+              <span>•</span>
+              <span id="books-mood-indicator">Paper & Ink</span>
+            </div>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-slate-900" id="books-section-title">
+              Maybe a book instead? 📖
+            </h2>
+            <p class="text-sm text-slate-600">
+              Zero blue-light guilt, maximum mental clarity.
+            </p>
+          </div>
+
+          <!-- Book Language Filter Options -->
+          <div class="inline-flex p-1 bg-purple-50 rounded-xl border border-purple-200/80 self-start sm:self-auto" role="tablist" id="book-lang-filter-bar">
+            <button type="button" class="book-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-white text-purple-900 shadow-xs cursor-pointer" data-lang="all" id="btn-book-lang-all">
+              ✨ All Books
+            </button>
+            <button type="button" class="book-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="tamil" id="btn-book-lang-tamil">
+              🌴 Tamil Literature
+            </button>
+            <button type="button" class="book-lang-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-purple-900 cursor-pointer" data-lang="global" id="btn-book-lang-global">
+              🌐 Global Reads
+            </button>
+          </div>
+        </div>
+
+        <!-- Books Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5" id="books-cards-grid">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </section>
+
+      <!-- ================= 🎮 MOOD BOOSTER ================= -->
+      <section class="scroll-mt-24 space-y-6" id="booster-section">
+        <div class="text-center space-y-2 max-w-xl mx-auto">
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-600 bg-red-100/70 px-3 py-1 rounded-full">
+            <span>Instant Intervention</span>
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-slate-900" id="booster-section-title">
+            Emergency Mood Booster 🚨
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600">
+            One immediate micro-activity scientifically or comedically suited for right now.
+          </p>
+        </div>
+
+        <!-- Interactive Booster Card -->
+        <div class="max-w-2xl mx-auto glass-panel p-8 sm:p-10 rounded-3xl text-center space-y-6 border-2 border-purple-200 shadow-xl relative overflow-hidden" id="emergency-booster-card">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-purple-200 to-pink-200 flex items-center justify-center text-3xl shadow-inner" id="booster-icon-badge">
+            ⚡
+          </div>
+
+          <div class="space-y-3">
+            <span class="text-xs font-semibold px-3 py-1 bg-purple-100 text-purple-800 rounded-full" id="booster-mood-label">
+              Active Vibe Task
+            </span>
+            <p class="font-display text-xl sm:text-2xl font-bold text-slate-900 leading-snug" id="booster-activity-text">
+              “Play your comfort song and take 5 slow breaths.”
+            </p>
+            <p class="text-xs text-slate-500" id="booster-tip-text">
+              Do it right now. Feelio is watching. 👀
+            </p>
+          </div>
+
+          <!-- Shuffle Button -->
+          <div class="pt-2">
+            <button type="button" id="btn-booster-shuffle" class="btn-feelio-primary inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm sm:text-base font-bold cursor-pointer">
+              <span id="shuffle-icon" class="inline-block transition-transform">🔀</span>
+              <span>Give me another one</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 📊 MOOD HISTORY ================= -->
+      <section class="scroll-mt-24 space-y-6" id="journey-section">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-600">
+              <span>Local Storage Timeline</span>
+            </div>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-slate-900" id="journey-section-title">
+              Your Feelio Journey 📈
+            </h2>
+            <p class="text-sm text-slate-600">
+              Saved privately in your browser. No login, no cloud surveillance, just your emotional timeline.
+            </p>
+          </div>
+
+          <!-- Clear history button -->
+          <button type="button" id="btn-clear-history" class="text-xs font-medium text-slate-500 hover:text-red-600 transition-colors underline self-start sm:self-auto">
+            Clear History
+          </button>
+        </div>
+
+        <!-- Journey Card with Timeline -->
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-purple-100 shadow-md space-y-6" id="journey-card">
+          <!-- Mini Stats Row -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center pb-4 border-b border-purple-100/80">
+            <div class="p-3 bg-white/60 rounded-xl">
+              <div class="text-xs text-slate-500 font-medium">Total Check-ins</div>
+              <div class="font-display text-xl font-extrabold text-purple-700" id="stat-total-checkins">0</div>
+            </div>
+            <div class="p-3 bg-white/60 rounded-xl">
+              <div class="text-xs text-slate-500 font-medium">Current Vibe</div>
+              <div class="font-display text-xl font-extrabold text-purple-700" id="stat-current-vibe">—</div>
+            </div>
+            <div class="p-3 bg-white/60 rounded-xl">
+              <div class="text-xs text-slate-500 font-medium">Favorite Mood</div>
+              <div class="font-display text-xl font-extrabold text-purple-700" id="stat-top-mood">—</div>
+            </div>
+            <div class="p-3 bg-white/60 rounded-xl">
+              <div class="text-xs text-slate-500 font-medium">Emotional Variety</div>
+              <div class="font-display text-xl font-extrabold text-purple-700" id="stat-mood-variety">0 / 8</div>
+            </div>
+          </div>
+
+          <!-- Timeline entries container -->
+          <div class="space-y-3" id="journey-timeline-entries">
+            <!-- Dynamically populated or empty state -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= 🕵️ FUNNY LOGIN MODAL (SECRET IDENTITY CLEARANCE) ================= -->
+    <div id="login-modal-overlay" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+      <div id="login-card-container" class="relative w-full max-w-lg glass-panel p-6 sm:p-8 rounded-3xl border-2 border-purple-300/90 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto animate-message-in">
+        
+        <!-- Close Modal Button -->
+        <button type="button" id="btn-close-login" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-900 flex items-center justify-center font-bold text-lg transition-transform hover:scale-110 cursor-pointer" aria-label="Close dialog">
+          ✕
+        </button>
+
+        <!-- Modal Header -->
+        <div class="text-center space-y-1.5 pt-1">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-md mb-2" id="login-avatar-emoji">
+            👤
+          </div>
+          <span class="text-[11px] uppercase tracking-widest font-extrabold text-purple-700 bg-purple-100 px-3 py-0.5 rounded-full inline-block">
+            Account Clearance
+          </span>
+          <h2 class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900" id="login-modal-title">
+            Feelio Member Access
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto leading-relaxed" id="login-modal-subprompt">
+            Sign in with email and password to access personalized recommendations.
+          </p>
+        </div>
+
+        <!-- Logged-in Status Banner (only shown if already logged in) -->
+        <div id="active-identity-view" class="hidden p-4 bg-purple-100/80 rounded-2xl text-center space-y-2 border border-purple-200">
+          <p class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Signed in as:</p>
+          <div class="font-display font-bold text-base sm:text-lg text-purple-950 flex items-center justify-center gap-2" id="active-identity-display">
+            <span id="active-identity-display-icon">👤</span>
+            <span id="active-identity-display-name">madhusree644@gmail.com</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold">Active</span>
+          </div>
+          <p class="text-[11px] text-slate-500">Want to switch accounts or sign out?</p>
+          <div class="pt-1">
+            <button type="button" id="btn-logout-identity" class="px-4 py-1.5 rounded-xl text-xs font-bold text-red-600 hover:text-red-800 bg-white hover:bg-red-50 border border-red-200 shadow-xs transition-colors cursor-pointer">
+              Sign Out 🧳
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Email & Password Form (for guest / switching) -->
+        <form id="feelio-login-form" class="space-y-4">
+          <!-- Email Field -->
+          <div class="space-y-1.5">
+            <label for="input-modal-email" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Email Address:
+            </label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base select-none">✉️</span>
+              <input type="email" id="input-modal-email" required placeholder="you@example.com" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-purple-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder:text-slate-400 text-slate-800 font-medium" />
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1.5">
+            <label for="input-modal-password" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Password:
+            </label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base select-none">🔒</span>
+              <input type="password" id="input-modal-password" required placeholder="Enter password" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-purple-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all placeholder:text-slate-400 text-slate-800 font-medium" />
+            </div>
+          </div>
+
+          <!-- Feedback Notification Box -->
+          <div id="login-feedback-box" class="hidden p-3 rounded-xl text-xs font-semibold animate-message-in"></div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="btn-submit-secret-identity" class="btn-feelio-primary w-full py-3 px-4 rounded-xl font-display font-bold text-sm sm:text-base cursor-pointer flex items-center justify-center gap-2 shadow-md">
+              <span>Sign In</span>
+              <span>🚀</span>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-purple-200/50 mt-20 py-10 bg-white/50 backdrop-blur-sm text-center text-xs sm:text-sm text-slate-600" id="main-footer">
+      <div class="max-w-7xl mx-auto px-4 space-y-3">
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-xl">✨</span>
+          <span class="font-display font-bold text-base text-purple-900">FEELIO</span>
+          <span class="text-slate-400">•</span>
+          <span class="italic">“Whatever you feel, we feelio.”</span>
+        </div>
+        <p class="text-slate-500 text-xs">
+          Built with pure HTML, CSS & Vanilla JavaScript. Recommendations link to legitimate Spotify, Netflix & Goodreads search queries.
+        </p>
+        <div class="pt-2">
+          <a href="#hero-section" class="inline-flex items-center gap-1 text-purple-700 hover:text-purple-900 font-medium hover:underline text-xs" id="footer-back-to-top">
+            <span>Back to top</span>
+            <span>↑</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+    </div>
+
+    <!-- Vanilla JavaScript Entry Point -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
